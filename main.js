@@ -1,14 +1,14 @@
 function getData(url, cb) {
     var xhr = new XMLHttpRequest();
 
-    xhr.open("GET", url);
-    xhr.send();
-
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             cb(JSON.parse(this.responseText));
         }
     };
+
+    xhr.open("GET", url);
+    xhr.send();
 }
 
 function getTableHeaders(obj) {
@@ -25,11 +25,9 @@ function generatePaginationButtons(next, prev) {
     if (next && prev) {
         return `<button onclick="writeToDocument('${prev}')">Previous</button>
                 <button onclick="writeToDocument('${next}')">Next</button>`;
-    }
-    else if (next && !prev) {
+    } else if (next && !prev) {
         return `<button onclick="writeToDocument('${next}')">Next</button>`;
-    }
-    else if (!next && prev) {
+    } else if (!next && prev) {
         return `<button onclick="writeToDocument('${prev}')">Previous</button>`;
     }
 }
@@ -58,6 +56,6 @@ function writeToDocument(url) {
             tableRows.push(`<tr>${dataRow}</tr>`);
         });
 
-        el.innerHTML = `<table>${tableHeaders}${tableRows}</table>${pagination}`;
+        el.innerHTML = `<table>${tableHeaders}${tableRows}</table>${pagination}`.replace(/,/g, "");
     });
 }
